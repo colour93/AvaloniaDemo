@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaDemo.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:AvaloniaDemo.Views"
+        mc:Ignorable="d" Width="500" Height="270" CanResize="False"
+        x:Class="AvaloniaDemo.Views.MainWindow"
+        Icon="/Assets/fluent-translate-auto-16-regular.ico"
+        Title="Translator Demo">
+
+  <Grid RowDefinitions="*, Auto" Margin="20">
+    <StackPanel Grid.Row="0" Spacing="20">
+      <Grid ColumnDefinitions="*, *, *">
+        <Button Grid.Column="0" Margin="0, 0, 7, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="ButtonMainContentAreaConfigClick">文本识别区域设置</Button>
+        <Button Grid.Column="1" Margin="7, 0, 7, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="ButtonRoleNameAreaConfigClick">角色识别区域设置</Button>
+        <Button Grid.Column="2" Margin="7, 0, 0, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="ButtonOpenAISettingsClick">OpenAI 设置</Button>
+      </Grid>
+      <Grid ColumnDefinitions="*, *">
+        <StackPanel Spacing="5" Grid.Column="0" Margin="0, 0, 10, 0">
+          <TextBlock>文本语言</TextBlock>
+          <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch">
+            <ComboBoxItem>英文</ComboBoxItem>
+            <ComboBoxItem>中文</ComboBoxItem>
+          </ComboBox>
+        </StackPanel>
+        <Button Grid.Column="1" Margin="10, 0, 0, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  VerticalAlignment="Bottom">OCR 模型管理</Button>
+      </Grid>
+      <Grid ColumnDefinitions="*, *">
+        <StackPanel Spacing="5" Grid.Column="0" Margin="0, 0, 10, 0">
+          <TextBlock>更新触发快捷键</TextBlock>
+          <TextBox HorizontalAlignment="Stretch" Text="Enter" />
+        </StackPanel>
+        <StackPanel Spacing="5" Grid.Column="1" Margin="10, 0, 0, 0">
+          <TextBlock>强制触发时间（秒）</TextBlock>
+          <NumericUpDown HorizontalAlignment="Stretch" Value="30" />
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+    <UniformGrid Grid.Row="1" Rows="1" Columns="2">
+      <PathIcon Height="16" Width="16" Data="{StaticResource info}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+      <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Right">
+        <Button Click="ButtonTestClick">内容识别测试</Button>
+        <Button Background="{DynamicResource SystemAccentColor}" Click="ButtonStartClick">启动</Button>
+      </StackPanel>
+    </UniformGrid>
+  </Grid>
+</Window>

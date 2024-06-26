@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" MinWidth="400" MinHeight="550" Width="400" Height="550"
+        x:Class="AvaloniaDemo.OpenAISettingsWindow"
+        Title="OpenAI 设置"
+        Icon="/Assets/fluent-translate-auto-16-regular.ico"
+        >
+  <Grid RowDefinitions="Auto, *, Auto" Margin="20">
+    <StackPanel Grid.Row="0" Spacing="20">
+      <StackPanel Spacing="5">
+        <TextBlock>OpenAI API</TextBlock>
+        <TextBox HorizontalAlignment="Stretch" Text="https://api.openai.com" />
+      </StackPanel>
+      <StackPanel Spacing="5">
+        <TextBlock>API Key</TextBlock>
+        <TextBox HorizontalAlignment="Stretch" Text="Key" />
+      </StackPanel>
+      <StackPanel Spacing="5">
+        <TextBlock>模型</TextBlock>
+        <TextBox HorizontalAlignment="Stretch" Text="gpt-4o" />
+      </StackPanel>
+      <StackPanel Spacing="5">
+        <TextBlock>Temperature</TextBlock>
+        <TextBox HorizontalAlignment="Stretch" Text="0.7" />
+      </StackPanel>
+    </StackPanel>
+    <Grid Grid.Row="1" Margin="0, 20" RowDefinitions="Auto, *">
+      <TextBlock Grid.Row="0" Margin="0, 0, 00, 5">预置 Prompt</TextBlock>
+      <TextBox Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" VerticalAlignment="Stretch"></TextBox>
+    </Grid>
+    <Grid Grid.Row="2" ColumnDefinitions="*, *, *">
+      <Button Grid.Column="0" Margin="0, 0, 7, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">取消</Button>
+      <Button Grid.Column="1" Margin="7, 0, 7, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">测试</Button>
+      <Button Grid.Column="2" Margin="7, 0, 0, 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="{DynamicResource SystemAccentColor}">保存</Button>
+    </Grid>
+  </Grid>
+</Window>
