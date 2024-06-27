@@ -1,0 +1,45 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="800" Height="450"
+        x:Class="AvaloniaDemo.Views.DebuggerWindow"
+        Title="Debugger Window">
+    <Grid RowDefinitions="*, Auto" Margin="20">
+        <Grid Grid.Row="0" RowDefinitions="*, *, *" ColumnDefinitions="*, *">
+            <StackPanel Grid.Row="0" Grid.Column="0" Spacing="5" Margin="0, 0, 5, 5">
+                <TextBlock>文本截图</TextBlock>
+                <Image HorizontalAlignment="Stretch" Source="{Binding Result.MainContentImage}" />
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Spacing="5" Margin="5, 0, 0, 5">
+                <TextBlock>文本识别内容</TextBlock>
+                <TextBox HorizontalAlignment="Stretch" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalAlignment="Stretch" Text="{Binding Result.MainContentText}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Spacing="5" Margin="0, 5, 5, 5">
+                <TextBlock>角色截图</TextBlock>
+                <Image HorizontalAlignment="Stretch" Source="{Binding Result.RoleNameImage}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Spacing="5" Margin="5, 5, 0, 5">
+                <TextBlock>角色识别内容</TextBlock>
+                <TextBox HorizontalAlignment="Stretch" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalAlignment="Stretch" Text="{Binding Result.RoleNameText}" />
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Spacing="5" Margin="0, 5, 5, 0">
+                <TextBlock>API 响应</TextBlock>
+                <TextBox HorizontalAlignment="Stretch" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalAlignment="Stretch" Text="{Binding Result.Response}" />
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="1" Spacing="5" Margin="5, 5, 0, 0">
+                <TextBlock>API 结果</TextBlock>
+                <TextBox HorizontalAlignment="Stretch" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalAlignment="Stretch" Text="{Binding Result.ResultText}" />
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="20" HorizontalAlignment="Right">
+            <Button Click="ButtonExit_OnClick">退出</Button>
+            <Button Click="ButtonTest_OnClick" Background="{DynamicResource SystemAccentColor}">测试</Button>
+        </StackPanel>
+    </Grid>
+</Window>

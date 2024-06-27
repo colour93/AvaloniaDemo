@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Avalonia.Controls;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace AvaloniaDemo.Utils;
 
@@ -54,16 +56,36 @@ public static class Utils
         Environment.Exit(0);
     }
 
+    public static T? GetFromJson<T>(string json) where T : class
+    {
+        var result = IsValidJson(json);
+        return result
+            ? JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings()
+            {
+                ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            })
+            : null;
+    }
+
+    public static string ToJson(object obj)
+    {
+        return JsonConvert.SerializeObject(obj, new JsonSerializerSettings()
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            Formatting = Formatting.Indented
+        });
+    }
+
     public static T? GetFromJsonFile<T>(string path) where T : class
     {
-        var json = File.ReadAllText(path);
-        var result = IsValidJson(json);
-        return result ? JsonConvert.DeserializeObject<T>(json) : null;
+        return GetFromJson<T>(File.ReadAllText(path));
     }
 
     public static void WriteToJsonFile(object obj, string path)
     {
-        var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
-        File.WriteAllText(path, json);
+        File.WriteAllText(path, ToJson(obj));
     }
 }

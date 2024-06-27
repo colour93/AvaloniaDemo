@@ -9,7 +9,7 @@ public partial class TranslatorWindow : Window
 {
     public TranslatorWindow()
     {
-        InitializeComponent();
         DataContext = new TranslatorViewModel();
+        InitializeComponent();
     }
 }

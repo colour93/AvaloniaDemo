@@ -8,11 +8,11 @@ using AvaloniaDemo.Typings;
 
 namespace AvaloniaDemo;
 
-public partial class OCRAreaWindow : Window
+public partial class OcrAreaWindow : Window
 {
-    public OCRAreaConfig? Config { get; private set; }
+    public OcrAreaConfig? Config { get; private set; }
 
-    public OCRAreaWindow(OCRAreaConfig? config, string title)
+    public OcrAreaWindow(OcrAreaConfig? config, string title)
     {
         InitializeComponent();
 
@@ -28,7 +28,7 @@ public partial class OCRAreaWindow : Window
 
     private void ButtonSaveClick(object sender, RoutedEventArgs e)
     {
-        Config = new OCRAreaConfig((int)Width, (int)Height, Position.X, Position.Y);
+        Config = new OcrAreaConfig((int)Width, (int)Height, Position.X, Position.Y);
         Close(Config);
     }
 

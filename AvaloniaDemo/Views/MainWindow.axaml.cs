@@ -1,18 +1,15 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-using System.Diagnostics;
-using System;
 using System.IO;
-using Tesseract;
-using System.Drawing;
 using AvaloniaDemo.Typings;
 
 namespace AvaloniaDemo.Views;
 
 public partial class MainWindow : Window
 {
-    public OCRAreaConfig? MainContentArea { get; set; }
-    public OCRAreaConfig? RoleNameArea { get; set; }
+    public OcrAreaConfig? MainContentArea { get; set; }
+    public OcrAreaConfig? RoleNameArea { get; set; }
+    public OpenAiConfig? OpenAIConfig { get; set; }
 
     public const string ConfigFolderPath = "config";
     public static readonly string AreaConfigPath = Path.Combine(ConfigFolderPath, "area.json");
@@ -45,80 +42,42 @@ public partial class MainWindow : Window
         else
         {
             var areaConfig = Utils.Utils.GetFromJsonFile<AreaConfig>(AreaConfigPath);
-            if (areaConfig != null)
-            {
-                MainContentArea = areaConfig.MainContent;
-                RoleNameArea = areaConfig.RoleName;
-            }
+            MainContentArea = areaConfig?.MainContent;
+            RoleNameArea = areaConfig?.RoleName;
+
+            OpenAIConfig = Utils.Utils.GetFromJsonFile<OpenAiConfig>(OpenAIConfigPath);
         }
     }
 
     public async void ButtonMainContentAreaConfigClick(object source, RoutedEventArgs args)
     {
-        var ocrAreaWindow = new OCRAreaWindow(MainContentArea, "文本识别区域设置");
-        var config = await ocrAreaWindow.ShowDialog<OCRAreaConfig?>(this);
-        if (config != null)
-        {
-            MainContentArea = config;
-            var areaConfig = Utils.Utils.GetFromJsonFile<AreaConfig>(AreaConfigPath);
-            areaConfig!.MainContent = config;
-            Utils.Utils.WriteToJsonFile(areaConfig, AreaConfigPath);
-        }
+        var ocrAreaWindow = new OcrAreaWindow(MainContentArea, "文本识别区域设置");
+        var config = await ocrAreaWindow.ShowDialog<OcrAreaConfig?>(this);
+        if (config == null) return;
+        MainContentArea = config;
+        var areaConfig = Utils.Utils.GetFromJsonFile<AreaConfig>(AreaConfigPath);
+        areaConfig!.MainContent = config;
+        Utils.Utils.WriteToJsonFile(areaConfig, AreaConfigPath);
     }
-    
+
     public async void ButtonRoleNameAreaConfigClick(object source, RoutedEventArgs args)
     {
-        var ocrAreaWindow = new OCRAreaWindow(RoleNameArea, "角色识别区域设置");
-        var config = await ocrAreaWindow.ShowDialog<OCRAreaConfig?>(this);
-        if (config != null)
-        {
-            RoleNameArea = config;
-            var areaConfig = Utils.Utils.GetFromJsonFile<AreaConfig>(AreaConfigPath);
-            areaConfig!.RoleName = config;
-            Utils.Utils.WriteToJsonFile(areaConfig, AreaConfigPath);
-        }
+        var ocrAreaWindow = new OcrAreaWindow(RoleNameArea, "角色识别区域设置");
+        var config = await ocrAreaWindow.ShowDialog<OcrAreaConfig?>(this);
+        if (config == null) return;
+        RoleNameArea = config;
+        var areaConfig = Utils.Utils.GetFromJsonFile<AreaConfig>(AreaConfigPath);
+        areaConfig!.RoleName = config;
+        Utils.Utils.WriteToJsonFile(areaConfig, AreaConfigPath);
     }
 
-    public void ButtonOpenAISettingsClick(object source, RoutedEventArgs args)
+    public async void ButtonOpenAISettingsClick(object source, RoutedEventArgs args)
     {
-        var openAISettingsWindow = new OpenAISettingsWindow();
-        openAISettingsWindow.Show();
-    }
-
-    public string PerformOCR(Bitmap bitmap)
-    {
-        try
-        {
-            // 初始化 Tesseract 引擎
-            using var engine =
-                new TesseractEngine(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata"),
-                    "eng+chi_sim", EngineMode.Default);
-            // 从文件加载图像
-            using var img = PixConverter.ToPix(bitmap);
-            // 识别图像中的文本
-            using var page = engine.Process(img);
-            return page.GetText();
-        }
-        catch (Exception e)
-        {
-            Trace.TraceError(e.Message);
-            return string.Empty;
-        }
-    }
-
-    public async void ButtonPerformClick(object source, RoutedEventArgs args)
-    {
-        if (MainContentArea != null)
-        {
-            var mainContentItem = new OCRItem(MainContentArea);
-            using var bitmap = mainContentItem.Capture();
-            bitmap.Save("D:\\UserData\\Desktop\\Temp\\screenshot.png");
-            var result = PerformOCR(bitmap);
-            if (result != null)
-            {
-                //ResultTextBox.Text = result;
-            }
-        }
+        var openaiSettingsWindow = new OpenAISettingsWindow(OpenAIConfig);
+        var config = await openaiSettingsWindow.ShowDialog<OpenAiConfig?>(this);
+        if (config == null) return;
+        OpenAIConfig = config;
+        Utils.Utils.WriteToJsonFile(config, OpenAIConfigPath);
     }
 
     private void ButtonStartClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -129,5 +88,7 @@ public partial class MainWindow : Window
 
     private void ButtonTestClick(object? sender, RoutedEventArgs e)
     {
+        var debuggerWindow = new DebuggerWindow(OpenAIConfig, MainContentArea, RoleNameArea);
+        debuggerWindow.Show();
     }
 }
